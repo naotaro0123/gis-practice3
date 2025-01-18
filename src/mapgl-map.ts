@@ -1,67 +1,53 @@
-import { Deck } from "@deck.gl/core";
-import { ArcLayer, GeoJsonLayer } from "@deck.gl/layers";
+import { Tiles3DLoader } from "@loaders.gl/3d-tiles";
+import { Deck, Tile3DLayer } from "deck.gl";
+
+const INITIAL_VIEW_STATE = {
+  longitude: -120,
+  latitude: 34,
+  height: 600,
+  width: 800,
+  pitch: 45,
+  maxPitch: 85,
+  bearing: 0,
+  minZoom: 2,
+  maxZoom: 30,
+  zoom: 14.5,
+};
 
 export const setupMapGL = (container: HTMLElement) => {
-  // source: Natural Earth http://www.naturalearthdata.com/ via geojson.xyz
-  const COUNTRIES =
-    "https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_50m_admin_0_scale_rank.geojson"; //eslint-disable-line
-  const AIR_PORTS =
-    "https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_10m_airports.geojson";
-
-  const INITIAL_VIEW_STATE = {
-    latitude: 51.47,
-    longitude: 0.45,
-    zoom: 4,
-    bearing: 0,
-    pitch: 30,
-  };
-
-  new Deck({
+  const deckgl = new Deck({
     initialViewState: INITIAL_VIEW_STATE,
     controller: true,
     layers: [
-      new GeoJsonLayer({
-        id: "base-map",
-        data: COUNTRIES,
-        // Styles
-        stroked: true,
-        filled: true,
-        lineWidthMinPixels: 2,
-        opacity: 0.4,
-        getLineColor: [60, 60, 60],
-        getFillColor: [200, 200, 200],
+      new Tile3DLayer({
+        id: "tile3dlayer",
+        pointSize: 1,
+        data: "https://s3-ap-northeast-1.amazonaws.com/3dimension.jp/13000_tokyo-egm96/13101_chiyoda-ku_notexture/tileset.json", // PLATEAU千代田区
+        loader: Tiles3DLoader,
+        onTilesetLoad: (tileset) => {
+          const { cartographicCenter } = tileset;
+          console.log(cartographicCenter); // 3dtilesの中心座標を取れるぞ
+
+          // const [longitude, latitude] = cartographicCenter;
+          // console.log(longitude, latitude); // 3dtilesの中心座標を取れるぞ
+        },
       }),
-      new GeoJsonLayer({
-        id: "airports",
-        data: AIR_PORTS,
-        // Styles
-        filled: true,
-        pointRadiusMinPixels: 2,
-        pointRadiusScale: 2000,
-        getPointRadius: (f) => 11 - f.properties.scalerank,
-        getFillColor: [200, 0, 80, 180],
-        // Interactive props
-        pickable: true,
-        autoHighlight: true,
-        onClick: (info) =>
-          // eslint-disable-next-line
-          info.object &&
-          alert(
-            `${info.object.properties.name} (${info.object.properties.abbrev})`
-          ),
-      }),
-      new ArcLayer({
-        id: "arcs",
-        data: AIR_PORTS,
-        dataTransform: (d) =>
-          d.features.filter((f) => f.properties.scalerank < 4),
-        // Styles
-        getSourcePosition: (f) => [-0.4531566, 51.4709959], // London
-        getTargetPosition: (f) => f.geometry.coordinates,
-        getSourceColor: [0, 128, 200],
-        getTargetColor: [200, 0, 80],
-        getWidth: 1,
-      }),
+      // new Tile3DLayer({
+      //   id: "tile-3d-layer",
+      //   data: "https://tiles.arcgis.com/tiles/z2tnIkrLQ2BRzr6P/arcgis/rest/services/SanFrancisco_Bldgs/SceneServer/layers/0",
+      //   loader: I3SLoader,
+      //   onTilesetLoad: (tileset) => {
+      //     const { zoom, cartographicCenter } = tileset;
+      //     const [longitude, latitude] = cartographicCenter;
+      //     const viewState = {
+      //       ...deckgl.viewState,
+      //       zoom: zoom + 2.5,
+      //       longitude,
+      //       latitude,
+      //     };
+      //     deckgl.setProps({ initialViewState: viewState });
+      //   },
+      // }),
     ],
   });
 };
