@@ -1,4 +1,6 @@
 import { Tiles3DLoader } from "@loaders.gl/3d-tiles";
+// エラーが出るがPlateauの3dtilesを読み込むためには必要。使わない場合は9系でOKそう（typescriptの恩恵がある）
+// https://github.com/visgl/deck.gl/discussions/8815
 import { ArcLayer, Deck, GeoJsonLayer, Tile3DLayer } from "deck.gl";
 
 const INITIAL_VIEW_STATE = {
