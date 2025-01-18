@@ -67,7 +67,8 @@ export const setupMapGL = (container: HTMLElement) => {
       new Tile3DLayer({
         id: "tile3dlayer",
         pointSize: 1,
-        data: "https://plateau.geospatial.jp/main/data/3d-tiles/bldg/13100_tokyo/13101_chiyoda-ku/low_resolution/tileset.json", // PLATEAU千代田区
+        // data: "https://plateau.geospatial.jp/main/data/3d-tiles/bldg/13100_tokyo/13101_chiyoda-ku/low_resolution/tileset.json", // PLATEAU千代田区
+        data: "https://plateau.geospatial.jp/main/data/3d-tiles/bldg/14100_yokohama/low_resolution/tileset.json",
         loader: Tiles3DLoader,
         onTilesetLoad: (tileset): void => {
           console.log("onTilesetLoad", tileset);
