@@ -74,6 +74,7 @@ export const setupMapGL = (container: HTMLElement) => {
           console.log("onTilesetLoad", tileset);
           const { cartographicCenter, zoom } = tileset;
           console.log(cartographicCenter, zoom); // 3dtilesの中心座標を取れるぞ
+          // ここで3Dの中心に移動する
           deckgl.setProps({
             initialViewState: {
               longitude: cartographicCenter?.x ?? 0,
@@ -92,23 +93,6 @@ export const setupMapGL = (container: HTMLElement) => {
         //   );
         // },
       }),
-
-      // new Tile3DLayer({
-      //   id: "tile-3d-layer",
-      //   data: "https://tiles.arcgis.com/tiles/z2tnIkrLQ2BRzr6P/arcgis/rest/services/SanFrancisco_Bldgs/SceneServer/layers/0",
-      //   loader: I3SLoader,
-      //   onTilesetLoad: (tileset) => {
-      //     const { zoom, cartographicCenter } = tileset;
-      //     const [longitude, latitude] = cartographicCenter;
-      //     const viewState = {
-      //       ...deckgl.viewState,
-      //       zoom: zoom + 2.5,
-      //       longitude,
-      //       latitude,
-      //     };
-      //     deckgl.setProps({ initialViewState: viewState });
-      //   },
-      // }),
     ],
   });
 };
