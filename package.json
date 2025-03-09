@@ -9,8 +9,8 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "typescript": "~5.7.3",
-    "vite": "^6.0.5"
+    "typescript": "~5.8.2",
+    "vite": "^6.2.1"
   },
   "dependencies": {
     "deck.gl": "^8.9.36",
