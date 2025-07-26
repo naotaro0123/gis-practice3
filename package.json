@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "typescript": "~5.8.2",
-    "vite": "^7.0.4"
+    "vite": "^7.0.6"
   },
   "dependencies": {
     "deck.gl": "^8.9.36",
